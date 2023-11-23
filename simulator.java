@@ -43,48 +43,85 @@ public class simulator {
             movescnt++;
 
             System.out.println("Movescnt : " + movescnt + "  && CurrPos : " + currPos);
-            System.out.println("Total Moves count is : " + movescnt);
+
         }
+        System.out.println("Total Moves count is : " + movescnt);
     }
 
     // Double Player Game simulation 
-    public static  boolean DoublePlayerGameSimulation(boolean IsTurnA){
-    int currPos = 0;
-    while (currPos != 100) {
-        int move = MovesCalculator();
-      
-        int expectedMove = move + currPos; // position to be reached without any condition
+    public static boolean DoublePlayerGameSimulation(boolean IsTurnA) {
+        int currPos = 0;
+        while (currPos != 100) {
+            int move = MovesCalculator();
 
-        if (expectedMove < 0) {
-            currPos = 0; // handle if it goes backward and ensure doesn't go on negative side
+            int expectedMove = move + currPos; // position to be reached without any condition
+
+            if (expectedMove < 0) {
+                currPos = 0; // handle if it goes backward and ensure doesn't go on negative side
+
+            }
+
+            else if (expectedMove <= 100)
+                currPos = expectedMove; // handle if it goes forward and ensure if 
+            //position go above 100, the player stays in the same previous position
+
+            if (currPos == 100)
+                return IsTurnA;
+
+            if (move <= 0) // here if we get No play or snake then after making move other player turn is there
+                IsTurnA = !IsTurnA;
 
         }
-        
-        else if (expectedMove <= 100)
-            currPos = expectedMove; // handle if it goes forward and ensure if 
-        //position go above 100, the player stays in the same previous position
-        
-
-        if (currPos == 100)
-            return IsTurnA;
-        
-        if (move <= 0) // here if we get No play or snake then after making move other player turn is there
-            IsTurnA = !IsTurnA;  
-
-       
+        return IsTurnA;
     }
-    return IsTurnA;
+    
+    // Multi PLAYER GAME SIMULATION 
+    public static int MultiPlayerGameSimulation(int PlayerNo, int isTurn) {
+         int currPos = 0;
+         while (currPos != 100) {
+            //System.out.println(currPos+" : "+ isTurn);
+            int move = MovesCalculator();
+
+            int expectedMove = move + currPos; // position to be reached without any condition
+
+            if (expectedMove < 0) {
+                currPos = 0; // handle if it goes backward and ensure doesn't go on negative side
+
+            }
+
+            else if (expectedMove <= 100)
+                currPos = expectedMove; // handle if it goes forward and ensure if 
+            //position go above 100, the player stays in the same previous position
+
+            if (currPos == 100) {
+              //  System.out.println(currPos + " : " + isTurn);
+                return isTurn;
+            }
+
+            if (move <= 0) {// here if we get No play or snake then after making move other player turn is there
+                isTurn = (isTurn + 1) % (PlayerNo + 1);
+                if (isTurn == 0) // previous turn was of last player so it will go next to 1st player
+                    isTurn++;
+            }
+
+        }
+        return isTurn;
     }
+
     public static void main(String[] args) {
          
+        System.out.println("Welcome to Game Simulation Program:::::::::");
         SinglePlayerGameSimulation();
          
-        // Double Player A,B plays the game  and initially A's turn is there
-         boolean Is_A_Winner = DoublePlayerGameSimulation(true);
+        //Double Player A,B plays the game  and initially A's turn is there
+        boolean Is_A_Winner = DoublePlayerGameSimulation(true);
          if (Is_A_Winner)
              System.out.println("A is winner");
          else
              System.out.println("B  is Winner");
 
+
+         // Mutli Player Game Simulation
+       System.out.println("Winner for MultiPlayerGameSimulation is Player "+MultiPlayerGameSimulation(10,1));
     }
 }
