@@ -33,23 +33,58 @@ public class simulator {
         int currPos = 0;
         while (currPos != 100) {
             int move = MovesCalculator();
-        
+
             int expectedMove = move + currPos; // position to be reached without any condition
             if (expectedMove < 0) {
-                currPos=0; // handle if it goes backward and ensure doesn't go on negative side
-            }
-            else if(expectedMove<=100) currPos=expectedMove; // handle if it goes forward and ensure if 
-                //position go above 100, the player stays in the same previous position
-                movescnt++;
-            
-            System.out.println("Movescnt : "+movescnt + "  && CurrPos : "+currPos);
+                currPos = 0; // handle if it goes backward and ensure doesn't go on negative side
+            } else if (expectedMove <= 100)
+                currPos = expectedMove; // handle if it goes forward and ensure if 
+            //position go above 100, the player stays in the same previous position
+            movescnt++;
+
+            System.out.println("Movescnt : " + movescnt + "  && CurrPos : " + currPos);
+            System.out.println("Total Moves count is : " + movescnt);
         }
     }
 
+    // Double Player Game simulation 
+    public static  boolean DoublePlayerGameSimulation(boolean IsTurnA){
+    int currPos = 0;
+    while (currPos != 100) {
+        int move = MovesCalculator();
+      
+        int expectedMove = move + currPos; // position to be reached without any condition
+
+        if (expectedMove < 0) {
+            currPos = 0; // handle if it goes backward and ensure doesn't go on negative side
+
+        }
+        
+        else if (expectedMove <= 100)
+            currPos = expectedMove; // handle if it goes forward and ensure if 
+        //position go above 100, the player stays in the same previous position
+        
+
+        if (currPos == 100)
+            return IsTurnA;
+        
+        if (move <= 0) // here if we get No play or snake then after making move other player turn is there
+            IsTurnA = !IsTurnA;  
+
+       
+    }
+    return IsTurnA;
+    }
     public static void main(String[] args) {
          
-         SinglePlayerGameSimulation();
+        SinglePlayerGameSimulation();
          
+        // Double Player A,B plays the game  and initially A's turn is there
+         boolean Is_A_Winner = DoublePlayerGameSimulation(true);
+         if (Is_A_Winner)
+             System.out.println("A is winner");
+         else
+             System.out.println("B  is Winner");
 
     }
 }
